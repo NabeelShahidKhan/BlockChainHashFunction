@@ -1,43 +1,70 @@
-
-
-import java.util.Date;
-
 public class Block {
-	
-	public String hash;
-	public String previousHash; 
-	private String data; //our data will be a simple message.
-	private long timeStamp; //as number of milliseconds since 1/1/1970.
-	private int nonce;
-	
-	//Block Constructor.  
-	public Block(String data,String previousHash ) {
-		this.data = data;
-		this.previousHash = previousHash;
-		this.timeStamp = new Date().getTime();
-		
-		this.hash = calculateHash(); //Making sure we do this after we set the other values.
-	}
-	
-	//Calculate new hash based on blocks contents
-	public String calculateHash() {
-		String calculatedhash = StringUtil.applySha256( 
-				previousHash +
-				Long.toString(timeStamp) +
-				Integer.toString(nonce) + 
-				data 
-				);
-		return calculatedhash;
-	}
-	
-	//Increases nonce value until hash target is reached.
-	public void mineBlock(int difficulty) {
-		String target = StringUtil.getDificultyString(difficulty); //Create a string with difficulty * "0" 
-		while(!hash.substring( 0, difficulty).equals(target)) {
-			nonce ++;
-			hash = calculateHash();
-		}
-		System.out.println("Block Mined!!! : " + hash);
-	}
-	
+    private int    index;
+    private String previousHash;
+    private long   timestamp;
+    private String data;
+    private String hash;
+
+    public Block() {
+    }
+
+    public Block(int index, String previousHash, long timestamp, String data, String hash) {
+        this.index = index;
+        this.previousHash = previousHash;
+        this.timestamp = timestamp;
+        this.data = data;
+        this.hash = hash;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public String getPreviousHash() {
+        return previousHash;
+    }
+
+    public void setPreviousHash(String previousHash) {
+        this.previousHash = previousHash;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
+    
+    public String toString(){
+    	String s="";
+    		s+= "\t{"+"\n\t\tindex: "+(this.index-1) +
+    				"\n\t\ttimeStamp : "+this.timestamp+
+    				"\n\t\tdata : "+this.data+
+    				"\n\t\tpriviousHash : "+this.previousHash+
+    				"\n\t\tHash : "+this.getHash()+"\n\t}";
+    		return s;
+    }
+    
 }
+
